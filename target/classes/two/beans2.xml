@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <bean id="userService" class="two.aop.service.impl.UserService"/>
+    <!-- 这个切面也要配置成bean-->
+    <bean id="log" class="two.aop.advice.Log2"/>
+    <aop:config>
+        <!--切入点，需要告诉方法在什么去执行
+        expression="execution(* com.spring.service.impl.*.*(..))"
+        第一个* 表示所有的返回值，然后就是包名
+        第二个*表示所有的类对象
+        第三个*表示类对象所有的方法
+        第四个*表示所有方法下面的带参数的方法或者是不带参数的方法
+        -->
+        <aop:aspect ref="log">
+            <aop:pointcut expression="execution(* two.aop.service.impl.*.*(..))" id="pointcut"/>
+            <aop:before method="before" pointcut-ref="pointcut"/>
+            <aop:after method="after" pointcut-ref="pointcut"/>
+        </aop:aspect>
+    </aop:config>
+</beans>

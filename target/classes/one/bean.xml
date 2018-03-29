@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <bean id="userService" class="one.com.info.serviceimpl.UserService">
+        <property name="user" ref="user"/>
+    </bean>
+
+    <bean id="user" class="one.com.info.pojo.User">
+        <property name="userName" value="tql" />
+        <property name="age" value="22" />
+    </bean>
+
+    <bean id="factory" class="one.com.info.factory.UserFactory" />
+    <bean id="userFromFactory" factory-bean="factory" factory-method="getUserServiceIntance"  />
+
+    <!-- 引入属性文件 -->
+    <context:property-placeholder location="classpath:one/jdbc.properties" />
+    <!-- 配置数据源 -->
+    <!-- 数据源parent-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="minPoolSize"><value>${jdbc.minPoolSize}</value></property>
+        <property name="maxPoolSize"><value>${jdbc.maxPoolSize}</value></property>
+        <property name="maxIdleTime"><value>${jdbc.maxIdleTime}</value></property>
+        <property name="acquireIncrement"><value>1</value></property>
+        <property name="maxStatements"><value>0</value></property>
+        <property name="initialPoolSize"><value>${jdbc.initialPoolSize}</value></property>
+        <property name="idleConnectionTestPeriod"><value>${jdbc.idleConnectionTestPeriod}</value></property>
+        <property name="acquireRetryAttempts"><value>30</value></property>
+        <property name="testConnectionOnCheckin"><value>true</value></property>
+    </bean>
+
+
+</beans>
